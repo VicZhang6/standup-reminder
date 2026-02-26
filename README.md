@@ -1,10 +1,11 @@
 # 🧍 站立提醒 (Standup Reminder)
 
-一款轻量的 macOS 桌面应用，每隔一段时间提醒你站起来活动，远离久坐危害。
+一款轻量的桌面应用，每隔一段时间提醒你站起来活动，远离久坐危害。
 
 基于 Electron 构建，常驻系统状态栏，到时间后弹出全屏遮罩提醒。
 
 ![macOS](https://img.shields.io/badge/platform-macOS-lightgrey?logo=apple)
+![Windows](https://img.shields.io/badge/platform-Windows-blue?logo=windows)
 ![Electron](https://img.shields.io/badge/electron-33-blue?logo=electron)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -29,9 +30,14 @@
 
 ### 下载安装
 
-前往 [Releases](https://github.com/VicZhang6/standup-reminder/releases) 下载最新的 `.dmg` 安装包（Apple Silicon / arm64），双击挂载后拖入 Applications 即可。
+前往 [Releases](https://github.com/VicZhang6/standup-reminder/releases) 下载最新安装包：
 
-> **注意：** 由于未签名，首次打开可能需要在「系统设置 → 隐私与安全性」中允许运行。
+| 平台 | 文件 | 架构 |
+|---|---|---|
+| macOS | `.dmg` | Apple Silicon (arm64) |
+| Windows | `.exe` | x64 |
+
+> **macOS 注意：** 由于未签名，首次打开可能需要在「系统设置 → 隐私与安全性」中允许运行。
 
 ### 从源码运行
 
@@ -50,13 +56,17 @@ npm start
 npm run dev
 ```
 
-### 构建 DMG
+### 构建安装包
 
 ```bash
+# macOS DMG (arm64)
 npm run build:dmg
+
+# Windows EXE (x64)
+npm run build:win
 ```
 
-构建产物在 `dist/` 目录下，生成 arm64 架构的 `.dmg` 安装包。
+构建产物在 `dist/` 目录下。
 
 ## 🛠 技术栈
 

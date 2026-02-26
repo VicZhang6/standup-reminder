@@ -1,14 +1,15 @@
 {
   "name": "standup-reminder",
   "version": "1.0.0",
-  "description": "macOS 站立提醒应用 - 每隔一段时间提醒你站起来活动",
+  "description": "站立提醒应用 - 每隔一段时间提醒你站起来活动",
   "main": "main.js",
   "author": "Vic Zhang",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
     "build": "electron-builder --mac --arm64",
-    "build:dmg": "electron-builder --mac dmg --arm64"
+    "build:dmg": "electron-builder --mac dmg --arm64",
+    "build:win": "electron-builder --win --x64"
   },
   "build": {
     "appId": "com.viczhang.standup-reminder",
@@ -24,6 +25,27 @@
         }
       ],
       "icon": null
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerLanguages": [
+        "zh_CN",
+        "en_US"
+      ],
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
     },
     "dmg": {
       "title": "站立提醒",
