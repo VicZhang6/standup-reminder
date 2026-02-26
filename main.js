@@ -59,76 +59,17 @@ function createTray() {
 }
 
 function createTrayIcon() {
-    // 创建 22x22 @2x（44x44 实际像素）的 macOS Template 图标
-    // 绘制一个简笔画站立小人，黑色像素在 Template 模式下会自动适配深色/浅色
-    const size = 22;
-    const scale = 2;
-    const px = size * scale; // 44x44 实际渲染
-
-    // 使用 Buffer 手动构造一个简单的 RGBA 图像
-    const pixels = Buffer.alloc(px * px * 4, 0); // 全透明
-
-    function setPixel(x, y) {
-        if (x < 0 || x >= px || y < 0 || y >= px) return;
-        const i = (y * px + x) * 4;
-        pixels[i] = 0;       // R
-        pixels[i + 1] = 0;   // G
-        pixels[i + 2] = 0;   // B
-        pixels[i + 3] = 255; // A
+    if (process.platform === 'darwin') {
+        // macOS: 使用 Template 图标，自动适配深色/浅色模式
+        const iconPath = path.join(__dirname, 'assets', 'tray-iconTemplate.png');
+        const img = nativeImage.createFromPath(iconPath);
+        img.setTemplateImage(true);
+        return img;
+    } else {
+        // Windows: 使用应用图标作为托盘图标
+        const iconPath = path.join(__dirname, 'assets', 'icon.ico');
+        return nativeImage.createFromPath(iconPath);
     }
-
-    // 画圆 (Bresenham)
-    function drawCircle(cx, cy, r) {
-        let x = r, y = 0, err = 1 - r;
-        while (x >= y) {
-            for (let dx = -x; dx <= x; dx++) {
-                setPixel(cx + dx, cy + y);
-                setPixel(cx + dx, cy - y);
-            }
-            for (let dx = -y; dx <= y; dx++) {
-                setPixel(cx + dx, cy + x);
-                setPixel(cx + dx, cy - x);
-            }
-            y++;
-            if (err < 0) { err += 2 * y + 1; }
-            else { x--; err += 2 * (y - x) + 1; }
-        }
-    }
-
-    // 画粗线
-    function drawLine(x0, y0, x1, y1, thickness) {
-        const dx = Math.abs(x1 - x0), dy = Math.abs(y1 - y0);
-        const sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
-        let err = dx - dy;
-        const half = Math.floor(thickness / 2);
-        while (true) {
-            for (let tx = -half; tx <= half; tx++) {
-                for (let ty = -half; ty <= half; ty++) {
-                    setPixel(x0 + tx, y0 + ty);
-                }
-            }
-            if (x0 === x1 && y0 === y1) break;
-            const e2 = 2 * err;
-            if (e2 > -dy) { err -= dy; x0 += sx; }
-            if (e2 < dx) { err += dx; y0 += sy; }
-        }
-    }
-
-    // 绘制小人（坐标基于 44x44）
-    drawCircle(22, 7, 5);          // 头
-    drawLine(22, 12, 22, 28, 3);   // 身体
-    drawLine(22, 18, 13, 24, 3);   // 左臂
-    drawLine(22, 18, 31, 24, 3);   // 右臂
-    drawLine(22, 28, 14, 40, 3);   // 左腿
-    drawLine(22, 28, 30, 40, 3);   // 右腿
-
-    const img = nativeImage.createFromBuffer(pixels, {
-        width: px,
-        height: px,
-        scaleFactor: scale
-    });
-    img.setTemplateImage(true); // macOS 自动适配深色/浅色模式
-    return img;
 }
 
 function updateTrayMenu() {
