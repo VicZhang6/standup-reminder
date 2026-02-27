@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, ipcMain, screen, nativeImage } = require('electron');
+const { app, BrowserWindow, Tray, Menu, ipcMain, screen, nativeImage, nativeTheme } = require('electron');
 const path = require('path');
 
 // ── 全局状态 ──────────────────────────────────────────
@@ -67,7 +67,7 @@ function createTrayIcon() {
         return img;
     } else {
         // Windows: 使用应用图标作为托盘图标
-        const iconPath = path.join(__dirname, 'assets', 'icon.ico');
+        const iconPath = path.join(__dirname, 'assets', 'tray-icon-win.png');
         return nativeImage.createFromPath(iconPath);
     }
 }
@@ -102,21 +102,31 @@ function showControlWindow() {
         return;
     }
 
+    const isDark = nativeTheme.shouldUseDarkColors;
+
+    const isWin = process.platform === 'win32';
+
     controlWindow = new BrowserWindow({
         width: 420,
-        height: 520,
+        height: isWin ? 600 : 540,
         resizable: false,
         maximizable: false,
-        titleBarStyle: 'hiddenInset',
+        ...(isWin ? {} : { titleBarStyle: 'hiddenInset' }),
         vibrancy: 'under-window',
         visualEffectState: 'active',
-        backgroundColor: '#00000000',
+        backgroundColor: isDark ? '#1e1e1e' : '#ffffff',
+        ...(isWin ? { backgroundMaterial: 'mica', autoHideMenuBar: true } : {}),
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false
         }
     });
+
+    // Windows 下彻底移除菜单栏
+    if (isWin) {
+        controlWindow.setMenu(null);
+    }
 
     controlWindow.loadFile('control.html');
 
@@ -274,6 +284,14 @@ ipcMain.handle('get-timer-state', () => {
 app.whenReady().then(() => {
     createTray();
     showControlWindow();
+
+    // 监听系统主题变化，实时更新窗口背景色
+    nativeTheme.on('updated', () => {
+        const isDark = nativeTheme.shouldUseDarkColors;
+        if (controlWindow && !controlWindow.isDestroyed()) {
+            controlWindow.setBackgroundColor(isDark ? '#1e1e1e' : '#ffffff');
+        }
+    });
 });
 
 // macOS: 点击 Dock 图标时重新显示控制面板

@@ -16,7 +16,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: transparent;
+            background: #ffffff;
             color: #1a1a2e;
             height: 100vh;
             overflow: hidden;
@@ -42,8 +42,45 @@
         }
 
         .header {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 28px;
+        }
+
+        .header-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            outline: none;
+            background: transparent;
+            border-radius: 10px;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .header-icon:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .header-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        #clockBtn {
+            display: none;
         }
 
         .header h1 {
@@ -225,18 +262,18 @@
             font-size: 15px;
             font-weight: 700;
             color: #fff;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0c99ff;
             border: none;
             border-radius: 14px;
             cursor: pointer;
             transition: all 0.25s ease;
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.35);
+            box-shadow: 0 4px 16px rgba(12, 153, 255, 0.35);
             letter-spacing: 0.3px;
         }
 
         .btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 24px rgba(102, 126, 234, 0.5);
+            box-shadow: 0 6px 24px rgba(12, 153, 255, 0.5);
         }
 
         .btn-primary:active {
@@ -312,6 +349,94 @@
             min-width: 60px;
             text-align: center;
         }
+
+        /* ── 深色模式 ───────────────────────────────────── */
+        @media (prefers-color-scheme: dark) {
+            body {
+                color: #e5e7eb;
+                background: transparent;
+            }
+
+            .header h1 {
+                color: #f3f4f6;
+            }
+
+            .header p {
+                color: #9ca3af;
+            }
+
+            .progress-ring .bg {
+                stroke: rgba(255, 255, 255, 0.1);
+            }
+
+            .time-display {
+                color: #f3f4f6;
+            }
+
+            .time-display:hover {
+                background: rgba(102, 126, 234, 0.15);
+            }
+
+            .time-input {
+                color: #818cf8;
+                border-bottom-color: #818cf8;
+            }
+
+            .time-label {
+                color: #9ca3af;
+            }
+
+            .time-label.editing {
+                color: #818cf8;
+            }
+
+            .status-badge.running {
+                background: rgba(16, 185, 129, 0.15);
+                color: #34d399;
+            }
+
+            .status-badge.stopped {
+                background: rgba(239, 68, 68, 0.15);
+                color: #f87171;
+            }
+
+            .status-badge.running .indicator {
+                background: #34d399;
+            }
+
+            .status-badge.stopped .indicator {
+                background: #f87171;
+            }
+
+            .interval-section {
+                background: rgba(255, 255, 255, 0.06);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .interval-label {
+                color: #d1d5db;
+            }
+
+            .interval-btn {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.15);
+                color: #d1d5db;
+            }
+
+            .interval-btn:hover {
+                background: rgba(255, 255, 255, 0.12);
+                border-color: rgba(255, 255, 255, 0.2);
+            }
+
+            .interval-value {
+                color: #f3f4f6;
+            }
+
+            .header-icon:hover {
+                background: rgba(102, 126, 234, 0.15);
+                color: #818cf8;
+            }
+        }
     </style>
 </head>
 
@@ -319,8 +444,17 @@
     <div class="titlebar"></div>
     <div class="app">
         <div class="header">
-            <h1>🧍 站立提醒</h1>
-            <p>保持健康，定时活动</p>
+            <div class="header-text">
+                <h1>站立提醒</h1>
+                <p>保持健康，定时活动</p>
+            </div>
+            <button class="header-icon" id="clockBtn" title="历史记录">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg>
+            </button>
         </div>
 
         <div class="progress-section">

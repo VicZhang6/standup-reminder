@@ -162,18 +162,20 @@ toggleBtn.addEventListener('click', () => {
     window.electronAPI.toggleTimer();
 });
 
-// 间隔调节
-decreaseBtn.addEventListener('click', () => {
+// 间隔调节（按住 Shift 一次加减 5）
+decreaseBtn.addEventListener('click', (e) => {
+    const step = e.shiftKey ? 5 : 1;
     if (currentInterval > 1) {
-        currentInterval--;
+        currentInterval = Math.max(1, currentInterval - step);
         intervalValue.textContent = `${currentInterval} 分钟`;
         window.electronAPI.setInterval(currentInterval);
     }
 });
 
-increaseBtn.addEventListener('click', () => {
+increaseBtn.addEventListener('click', (e) => {
+    const step = e.shiftKey ? 5 : 1;
     if (currentInterval < 120) {
-        currentInterval++;
+        currentInterval = Math.min(120, currentInterval + step);
         intervalValue.textContent = `${currentInterval} 分钟`;
         window.electronAPI.setInterval(currentInterval);
     }
