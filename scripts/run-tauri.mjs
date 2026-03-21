@@ -52,7 +52,7 @@ if (process.platform === 'win32') {
 
   if (vsDevCmd) {
     const command = `call "${vsDevCmd}" -arch=x64 -host_arch=x64 >nul && npx tauri ${mode}`;
-    run('cmd.exe', ['/d', '/s', '/c', command]);
+    run(command, [], { shell: 'cmd.exe' });
   } else {
     run('npx.cmd', ['tauri', mode], { shell: true });
   }
