@@ -1,5 +1,6 @@
 import { defaultWindowIcon } from '@tauri-apps/api/app';
 import { invoke } from '@tauri-apps/api/core';
+import { openUrl } from '@tauri-apps/plugin-opener';
 import { Menu } from '@tauri-apps/api/menu';
 import { TrayIcon } from '@tauri-apps/api/tray';
 import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
@@ -800,6 +801,15 @@ async function init() {
   });
 
   backBtn?.addEventListener('click', showMainView);
+
+  releaseDownloadBtn?.addEventListener('click', async () => {
+    try {
+      await openUrl(RELEASE_LATEST_URL);
+    } catch (err) {
+      console.error(err);
+      window.open(RELEASE_LATEST_URL, '_blank', 'noopener,noreferrer');
+    }
+  });
   themeSystem?.addEventListener('click', () => selectTheme('system'));
   themeLight?.addEventListener('click', () => selectTheme('light'));
   themeDark?.addEventListener('click', () => selectTheme('dark'));

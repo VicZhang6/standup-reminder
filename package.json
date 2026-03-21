@@ -1,6 +1,6 @@
 {
   "name": "standup-reminder",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "站立提醒应用 - 每隔一段时间提醒你站起来活动",
   "license": "MIT",
   "author": "Vic Zhang",
@@ -13,7 +13,8 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@tauri-apps/api": "^2.10.1"
+    "@tauri-apps/api": "^2.10.1",
+    "@tauri-apps/plugin-opener": "^2.5.3"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.10.1",

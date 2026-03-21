@@ -1,6 +1,6 @@
 [package]
 name = "standup-reminder"
-version = "1.5.0"
+version = "1.5.1"
 description = "Standup reminder desktop app"
 authors = ["Vic Zhang"]
 license = "MIT"
@@ -19,3 +19,4 @@ tauri-build = { version = "2.5.6", features = [] }
 
 [dependencies]
 tauri = { version = "2.10.3", features = ["tray-icon"] }
+tauri-plugin-opener = "2"

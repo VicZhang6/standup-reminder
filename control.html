@@ -454,6 +454,40 @@
             color: var(--accent);
         }
 
+        .about-block {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .about-block .about-line {
+            margin: 0;
+        }
+
+        .about-download-btn {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .about-download-btn:hover {
+            color: var(--accent-soft);
+        }
+
+        .about-download-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
         .setting-toggle-row {
             display: flex;
             align-items: center;
@@ -1110,9 +1144,10 @@
                         </svg>
                         关于
                     </div>
-                    <div style="font-size: 13px; color: var(--text-secondary);">
-                        站立提醒 v1.5.0<br>
-                        保持健康，定时活动
+                    <div class="about-block">
+                        <p class="about-line">站立提醒 v1.5.1</p>
+                        <p class="about-line">保持健康，定时活动</p>
+                        <button type="button" class="about-download-btn" id="releaseDownloadBtn">下载最新版本</button>
                     </div>
                 </div>
             </div>
