@@ -450,9 +450,6 @@ async function init() {
   syncTheme();
   updateUI();
   setupWindowControls();
-
-  await createTray();
-
   await currentWindow.onCloseRequested((event) => {
     event.preventDefault();
     void hideControlWindow();
@@ -506,6 +503,12 @@ async function init() {
       clearInterval(tickInterval);
     }
   });
+
+  try {
+    await createTray();
+  } catch (error) {
+    console.error('Failed to initialize tray.', error);
+  }
 }
 
 void init();
