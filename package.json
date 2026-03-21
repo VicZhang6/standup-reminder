@@ -2,6 +2,7 @@
   "name": "standup-reminder",
   "version": "1.5.0",
   "description": "站立提醒应用 - 每隔一段时间提醒你站起来活动",
+  "license": "MIT",
   "author": "Vic Zhang",
   "scripts": {
     "dev": "node scripts/run-tauri.mjs dev",
