@@ -1,135 +1,84 @@
-# 🧍 站立提醒 (Standup Reminder)
+# 站立提醒 (Standup Reminder)
 
 一款轻量的桌面应用，每隔一段时间提醒你站起来活动，远离久坐危害。
 
-基于 Electron 构建，常驻系统状态栏，到时间后弹出全屏遮罩提醒。
+现在基于 Tauri 2 构建，常驻系统托盘，到时间后弹出全屏提醒。
 
 ![macOS](https://img.shields.io/badge/platform-macOS-lightgrey?logo=apple)
 ![Windows](https://img.shields.io/badge/platform-Windows-blue?logo=windows)
-![Electron](https://img.shields.io/badge/electron-33-blue?logo=electron)
+![Tauri](https://img.shields.io/badge/tauri-2.x-24c8db?logo=tauri)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
----
+## 功能特性
 
-## ✨ 功能特性
+- 定时提醒：默认每 20 分钟弹出全屏提醒，提示你站起来活动
+- 自定义间隔：通过主界面或托盘菜单调整提醒间隔
+- 单窗口设置页：设置面板已经合并进主窗口，通过页面切换进入
+- 系统托盘常驻：左键打开主面板，右键控制计时和退出
+- 优雅弹窗：到点后显示全屏提醒卡片，一键确认后自动开始下一轮
+- 轻量架构：桌面壳切换到 Tauri，显著减少 Electron runtime 负担
 
-- **定时提醒** — 默认每 20 分钟弹出全屏提醒，提示你站起来活动
-- **自定义间隔** — 通过控制面板或状态栏菜单调整提醒间隔（5 ~ 120 分钟）
-- **系统状态栏常驻** — 自绘时钟图标 + 倒计时文字实时显示剩余时间
-- **圆形进度环** — 控制面板中直观展示倒计时进度
-- **优雅弹窗** — 毛玻璃遮罩 + 卡片动画，一键确认已站立
-- **macOS 原生体验** — 无边框窗口、透明背景、Dock 栏隐藏，不打扰日常使用
+## 从源码运行
 
-## 📸 预览
+### 环境要求
 
-| 控制面板 | 提醒弹窗 |
-|:---:|:---:|
-| 圆形进度环 + 间隔调节 | 全屏毛玻璃 + 确认按钮 |
+- Node.js 20+
+- Rust 1.77+
+- Windows 下需要安装带 C++ 工具链的 Visual Studio Build Tools
 
-## 🚀 快速开始
-
-### 下载安装
-
-前往 [Releases](https://github.com/VicZhang6/standup-reminder/releases) 下载最新安装包：
-
-| 平台 | 文件 | 架构 |
-|---|---|---|
-| macOS | `.dmg` | Apple Silicon (arm64) |
-| Windows | `.exe` | x64 |
-
-> **macOS 注意：** 由于未签名，首次打开可能需要在「系统设置 → 隐私与安全性」中允许运行。
-
-### 从源码运行
+### 开发模式
 
 ```bash
-# 克隆仓库
-git clone https://github.com/VicZhang6/standup-reminder.git
-cd standup-reminder
-
-# 安装依赖
 npm install
-
-# 启动应用
-npm start
-
-# 或以开发模式启动（热重载 + DevTools）
 npm run dev
 ```
 
-开发模式说明：
+`npm run dev` 会同时启动：
 
-- `npm run dev` 使用 `electronmon`，在 Windows 上可正常工作
-- 修改 `main.js` / `preload.js` 时会自动重启 Electron
-- 修改 `control.html` / `reminder.html` / `control-renderer.js` / `renderer.js` 时会自动刷新窗口
-- `npm run dev:plain` 会保留原来的普通开发启动方式
+- Vite 静态前端开发服务
+- Tauri 桌面壳
+
+如果你只想验证前端构建，可以单独运行：
+
+```bash
+npm run build:web
+```
 
 ### 构建安装包
 
 ```bash
-# 按当前系统直接构建
-npm run build
-
-# macOS DMG (arm64)
-npm run build:dmg
-
-# macOS 通用构建
-npm run build:mac
-
-# Windows EXE (x64)
-npm run build:win
-```
-
-构建产物在 `dist/` 目录下。
-
-### Windows 构建说明
-
-在 Windows 10 / 11 上可以直接本地打包，无需额外配置：
-
-```bash
-npm install
-npm run build:win
-```
-
-或者直接使用：
-
-```bash
 npm run build
 ```
 
-说明：
+这会先构建 `dist-web/`，再由 Tauri 打包桌面应用。
 
-- `npm run build` 会按当前操作系统自动构建；在 Windows 上会生成 NSIS 安装包
-- 安装包输出路径为 `dist/站立提醒 Setup 1.0.0.exe`
-- 首次打包时 `electron-builder` 会自动下载 Electron 与 NSIS 相关依赖，需要保持网络畅通
-- 当前项目未配置代码签名，Windows 可能会显示 SmartScreen 提示，这属于正常现象
+## 项目结构
 
-## 🛠 技术栈
+```text
+standup-reminder/
+├── control.html         # 主界面 / 设置页
+├── control-renderer.js  # 主窗口逻辑（计时器、托盘、提醒窗口控制）
+├── reminder.html        # 全屏提醒弹窗
+├── renderer.js          # 提醒窗口逻辑
+├── app-shared.js        # 共享状态与主题工具
+├── vite.config.mjs      # 多页面前端构建配置
+├── src-tauri/           # Tauri 原生壳与能力配置
+└── assets/              # 图标等静态资源
+```
+
+## 技术栈
 
 | 技术 | 用途 |
 |---|---|
-| **Electron 33** | 跨平台桌面应用框架 |
-| **electron-builder** | 打包 & 生成 DMG |
-| **原生 HTML/CSS/JS** | 界面渲染，无额外 UI 框架 |
-| **Canvas NativeImage** | 程序化绘制状态栏时钟图标 |
+| Tauri 2 | 桌面应用壳 |
+| Vite | 多页面静态前端构建 |
+| 原生 HTML/CSS/JS | 界面渲染 |
+| Tauri JS API | 托盘、窗口、多页面控制 |
 
-## 📂 项目结构
+## 说明
 
-```
-standup-reminder/
-├── main.js              # Electron 主进程（托盘、窗口、定时器）
-├── preload.js           # 预加载脚本（IPC 桥接）
-├── control.html         # 控制面板界面
-├── control-renderer.js  # 控制面板渲染逻辑
-├── reminder.html        # 提醒弹窗界面
-├── renderer.js          # 提醒弹窗渲染逻辑
-├── package.json         # 项目配置 & 构建脚本
-└── assets/              # 静态资源
-```
+- 当前仓库默认使用 Tauri 能力配置来开放窗口控制、拖拽和多窗口创建权限。
 
-## 📄 License
+## License
 
 [MIT](LICENSE)
-
----
-
-> 久坐有害健康，起来伸个懒腰、喝杯水吧 ☕

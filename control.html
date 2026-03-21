@@ -12,15 +12,59 @@
             color-scheme: light;
             --accent: #4f46e5;
             --accent-soft: #6366f1;
-            --window-bg: linear-gradient(180deg, #eef2ff 0%, #f8fafc 100%);
-            --surface-bg: rgba(255, 255, 255, 0.94);
-            --surface-border: rgba(148, 163, 184, 0.2);
-            --surface-shadow: 0 24px 56px rgba(15, 23, 42, 0.14);
+            --window-bg: #ffffff;
+            --surface-bg: #ffffff;
+            --surface-border: #e5e7eb;
+            --surface-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             --text-primary: #1a1a2e;
-            --text-secondary: #9ca3af;
+            --text-secondary: #6b7280;
+            --progress-bg: #f3f4f6;
+            --progress-fg-start: #4f46e5;
+            --progress-fg-end: #6366f1;
+            --card-bg: #f9fafb;
+            --card-border: #e5e7eb;
+            --btn-bg: #ffffff;
+            --btn-border: #d1d5db;
+            --btn-hover-bg: #f3f4f6;
+            --btn-hover-border: #9ca3af;
+            --titlebar-bg: #ffffff;
+            --titlebar-border: #e5e7eb;
+            --running-bg: #d1fae5;
+            --running-color: #059669;
+            --running-dot: #10b981;
+            --stopped-bg: #fee2e2;
+            --stopped-color: #dc2626;
+            --stopped-dot: #ef4444;
             --titlebar-height: 56px;
             --titlebar-left-space: 20px;
             --titlebar-right-space: 24px;
+        }
+
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --window-bg: #001a3c;
+            --surface-bg: #001a3c;
+            --surface-border: #003366;
+            --surface-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            --text-primary: #e6f0ff;
+            --text-secondary: #8aa8d9;
+            --progress-bg: #003366;
+            --progress-fg-start: #4f46e5;
+            --progress-fg-end: #6366f1;
+            --card-bg: #002851;
+            --card-border: #003d80;
+            --btn-bg: #002851;
+            --btn-border: #003d80;
+            --btn-hover-bg: #003366;
+            --btn-hover-border: #0055b3;
+            --titlebar-bg: #001a3c;
+            --titlebar-border: #003366;
+            --running-bg: rgba(16, 185, 129, 0.2);
+            --running-color: #6ee7b7;
+            --running-dot: #34d399;
+            --stopped-bg: rgba(239, 68, 68, 0.2);
+            --stopped-color: #fca5a5;
+            --stopped-dot: #f87171;
         }
 
         * {
@@ -45,16 +89,6 @@
             position: relative;
         }
 
-        body::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(circle at top left, rgba(99, 102, 241, 0.18), transparent 34%),
-                radial-gradient(circle at top right, rgba(56, 189, 248, 0.14), transparent 30%);
-            pointer-events: none;
-        }
-
         .app {
             position: relative;
             height: 100%;
@@ -75,15 +109,19 @@
         }
 
         body.platform-darwin .app {
-            background: rgba(255, 255, 255, 0.72);
+            background: #ffffff;
             border-radius: 30px;
-            box-shadow: 0 28px 64px rgba(15, 23, 42, 0.18);
-            backdrop-filter: blur(28px) saturate(140%);
-            -webkit-backdrop-filter: blur(28px) saturate(140%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        :root[data-theme="dark"] body.platform-darwin .app {
+            background: #001a3c;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
         body.platform-darwin {
-            --titlebar-left-space: 74px;
+            --titlebar-left-space: 20px;
+            --titlebar-right-space: 64px;
         }
 
         body.platform-win32 .app,
@@ -91,9 +129,14 @@
             padding: calc(var(--titlebar-height) + 16px) 24px 28px;
             background: #ffffff;
             border: none;
-            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.1);
+            box-shadow: none;
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
+        }
+
+        :root[data-theme="dark"] body.platform-win32 .app,
+        :root[data-theme="dark"] body.platform-linux .app {
+            background: #001a3c;
         }
 
         body.platform-win32 {
@@ -142,15 +185,17 @@
             right: 0;
             height: var(--titlebar-height);
             padding: 12px var(--titlebar-right-space) 12px var(--titlebar-left-space);
-            -webkit-app-region: drag;
             display: flex;
             align-items: center;
             gap: 12px;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.62) 100%);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
             z-index: 100;
+        }
+
+        :root[data-theme="dark"] .titlebar {
+            background: #001a3c;
+            border-bottom: 1px solid #003366;
         }
 
         .titlebar-badge {
@@ -192,18 +237,17 @@
             top: 0;
             right: 0;
             bottom: 0;
-            display: none;
+            display: flex;
             align-items: center;
             gap: 2px;
             padding-right: 10px;
             padding-left: 6px;
-            -webkit-app-region: no-drag;
             z-index: 101;
         }
 
-        body.platform-win32 .window-controls,
-        body.platform-linux .window-controls {
-            display: flex;
+        body.platform-darwin .win-btn-minimize,
+        body.platform-darwin .win-btn-close {
+            display: none;
         }
 
         .win-btn {
@@ -222,11 +266,11 @@
         }
 
         .win-btn:hover {
-            background: rgba(15, 23, 42, 0.07);
+            background: rgba(148, 163, 184, 0.2);
         }
 
         .win-btn:active {
-            background: rgba(15, 23, 42, 0.11);
+            background: rgba(148, 163, 184, 0.3);
         }
 
         .win-btn svg {
@@ -245,6 +289,225 @@
             height: 11px;
         }
 
+        .win-btn-settings svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* 页面视图容器 */
+        .view-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .view {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .view.active {
+            display: flex;
+        }
+
+        #mainView {
+            justify-content: space-between;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            gap: 24px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* 设置页面返回按钮 */
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 0;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .back-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .back-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* 设置页面标题 */
+        .settings-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+
+        /* 设置选项卡片 */
+        .setting-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        :root[data-theme="dark"] .setting-card {
+            background: #002851;
+            border-color: #003d80;
+        }
+
+        .setting-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .setting-card-title svg {
+            width: 18px;
+            height: 18px;
+            color: var(--accent);
+        }
+
+        /* 主题选项大按钮 */
+        .theme-options {
+            display: flex;
+            gap: 12px;
+        }
+
+        .theme-option {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 8px;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            background: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        :root[data-theme="dark"] .theme-option {
+            background: #002851;
+            border-color: #003d80;
+        }
+
+        .theme-option:hover {
+            border-color: #cbd5e1;
+        }
+
+        :root[data-theme="dark"] .theme-option:hover {
+            border-color: #0055b3;
+        }
+
+        .theme-option.selected {
+            border-color: var(--accent);
+            background: rgba(79, 70, 229, 0.08);
+        }
+
+        :root[data-theme="dark"] .theme-option.selected {
+            background: rgba(99, 102, 241, 0.15);
+        }
+
+        .theme-preview {
+            width: 40px;
+            height: 30px;
+            border-radius: 6px;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-preview.light {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+
+        .theme-preview.dark {
+            background: #001a3c;
+            border: 1px solid #003366;
+        }
+
+        .theme-preview.system {
+            background: linear-gradient(90deg, #ffffff 50%, #001a3c 50%);
+            border: 1px solid #e5e7eb;
+        }
+
+        .theme-preview::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 12px;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            border-radius: 3px;
+        }
+
+        .theme-option-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .theme-option.selected .theme-option-label {
+            color: var(--accent);
+        }
+
+        /* 当前主题状态 */
+        .current-theme-status {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        :root[data-theme="dark"] .current-theme-status {
+            background: #002851;
+        }
+
+        .status-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .status-value {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
         .header {
             text-align: center;
             margin-bottom: 28px;
@@ -254,7 +517,7 @@
             font-size: 22px;
             font-weight: 800;
             letter-spacing: -0.5px;
-            color: #1a1a2e;
+            color: var(--text-primary);
         }
 
         .header p {
@@ -285,7 +548,7 @@
 
         .progress-ring .bg {
             fill: none;
-            stroke: #f0f0f5;
+            stroke: var(--progress-bg);
             stroke-width: 8;
         }
 
@@ -309,7 +572,7 @@
             font-size: 36px;
             font-weight: 800;
             letter-spacing: -1px;
-            color: #1a1a2e;
+            color: var(--text-primary);
             line-height: 1;
             cursor: pointer;
             border-radius: 12px;
@@ -318,7 +581,7 @@
         }
 
         .time-display:hover {
-            background: rgba(79, 70, 229, 0.08);
+            background: rgba(99, 102, 241, 0.15);
         }
 
         .time-input {
@@ -373,13 +636,13 @@
         }
 
         .status-badge.running {
-            background: rgba(16, 185, 129, 0.1);
-            color: #059669;
+            background: var(--running-bg);
+            color: var(--running-color);
         }
 
         .status-badge.stopped {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
+            background: var(--stopped-bg);
+            color: var(--stopped-color);
         }
 
         .status-badge .indicator {
@@ -389,12 +652,12 @@
         }
 
         .status-badge.running .indicator {
-            background: #10b981;
+            background: var(--running-dot);
             animation: pulse-dot 2s ease-in-out infinite;
         }
 
         .status-badge.stopped .indicator {
-            background: #ef4444;
+            background: var(--stopped-dot);
         }
 
         @keyframes pulse-dot {
@@ -433,32 +696,77 @@
             border: none;
             border-radius: 14px;
             cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 18px rgba(79, 70, 229, 0.22);
             letter-spacing: 0.3px;
+            transition: background 0.3s ease;
         }
 
         .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 26px rgba(99, 102, 241, 0.32);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
+            background: linear-gradient(135deg, #3730a3 0%, #4f46e5 100%);
         }
 
         .btn-primary.is-running {
             background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
-            box-shadow: 0 4px 18px rgba(217, 119, 6, 0.22);
         }
 
         .btn-primary.is-running:hover {
-            box-shadow: 0 8px 26px rgba(245, 158, 11, 0.3);
+            background: linear-gradient(135deg, #b45309 0%, #d97706 100%);
         }
 
         .btn-primary svg {
             width: 18px;
             height: 18px;
+        }
+
+        /* 计时器按钮组 */
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .timer-controls .btn-primary {
+            flex: 1;
+        }
+
+        /* 重置按钮 */
+        .btn-reset {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            min-height: 50px;
+            padding: 12px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .btn-reset:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        :root[data-theme="dark"] .btn-reset {
+            background: #002851;
+            border-color: #003d80;
+            color: #8aa8d9;
+        }
+
+        :root[data-theme="dark"] .btn-reset:hover {
+            background: #003366;
+            color: #e6f0ff;
+        }
+
+        /* 暂停状态下显示重置按钮 */
+        .timer-controls.has-reset .btn-reset {
+            display: flex;
+        }
+
+        .btn-reset svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
         }
 
         /* 间隔设置 */
@@ -467,15 +775,20 @@
             align-items: center;
             justify-content: space-between;
             padding: 14px 18px;
-            background: rgba(148, 163, 184, 0.08);
+            background: #ffffff;
             border-radius: 14px;
-            border: 1px solid rgba(148, 163, 184, 0.16);
+            border: 1px solid #e5e7eb;
+        }
+
+        :root[data-theme="dark"] .interval-section {
+            background: #002851;
+            border-color: #003d80;
         }
 
         .interval-label {
             font-size: 13px;
             font-weight: 600;
-            color: #4b5563;
+            color: var(--text-secondary);
         }
 
         .interval-control {
@@ -490,20 +803,32 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #d1d5db;
             border-radius: 10px;
-            background: #f8fafc;
+            background: #ffffff;
             font-size: 16px;
             font-weight: 600;
-            color: #475569;
+            color: #6b7280;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .interval-btn:hover {
-            background: #f1f5f9;
-            border-color: #cbd5e1;
-            color: #334155;
+            background: #f3f4f6;
+            border-color: #9ca3af;
+            color: #1a1a2e;
+        }
+
+        :root[data-theme="dark"] .interval-btn {
+            background: #002851;
+            border-color: #003d80;
+            color: #8aa8d9;
+        }
+
+        :root[data-theme="dark"] .interval-btn:hover {
+            background: #003366;
+            border-color: #0055b3;
+            color: #e6f0ff;
         }
 
         .interval-btn:active {
@@ -513,10 +838,11 @@
         .interval-value {
             font-size: 15px;
             font-weight: 700;
-            color: #1a1a2e;
+            color: var(--text-primary);
             min-width: 60px;
             text-align: center;
         }
+
     </style>
 </head>
 
@@ -532,6 +858,12 @@
             <div class="titlebar-title">站立提醒</div>
         </div>
         <div class="window-controls" id="windowControls">
+            <button type="button" class="win-btn win-btn-settings" id="settingsBtn" title="设置" aria-label="设置">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                </svg>
+            </button>
             <button type="button" class="win-btn win-btn-minimize" title="最小化" aria-label="最小化">
                 <svg viewBox="0 0 10 10" aria-hidden="true">
                     <path d="M0 5h10" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" />
@@ -545,59 +877,127 @@
         </div>
     </div>
     <div class="app">
-        <div class="header">
-            <h1>站立提醒</h1>
-            <p>保持健康，定时活动</p>
-        </div>
+        <!-- 页面视图容器 -->
+        <div class="view-container">
+            <!-- 主页面视图 -->
+            <div class="view active" id="mainView">
+                <div class="main-content">
+                    <div class="progress-section">
+                        <div class="progress-ring">
+                            <svg viewBox="0 0 180 180">
+                                <defs>
+                                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#4f46e5" />
+                                        <stop offset="100%" style="stop-color:#6366f1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="bg" cx="90" cy="90" r="78" />
+                                <circle class="fg" id="progressCircle" cx="90" cy="90" r="78" stroke-dasharray="490.09"
+                                    stroke-dashoffset="490.09" />
+                            </svg>
+                            <div class="progress-center">
+                                <div class="time-display" id="timeDisplay">20:00</div>
+                                <input class="time-input" id="timeInput" type="text" maxlength="5" placeholder="MM:SS" />
+                                <div class="time-label" id="timeLabel">剩余时间</div>
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="progress-section">
-            <div class="progress-ring">
-                <svg viewBox="0 0 180 180">
-                    <defs>
-                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#4f46e5" />
-                            <stop offset="100%" style="stop-color:#6366f1" />
-                        </linearGradient>
-                    </defs>
-                    <circle class="bg" cx="90" cy="90" r="78" />
-                    <circle class="fg" id="progressCircle" cx="90" cy="90" r="78" stroke-dasharray="490.09"
-                        stroke-dashoffset="490.09" />
-                </svg>
-                <div class="progress-center">
-                    <div class="time-display" id="timeDisplay">20:00</div>
-                    <input class="time-input" id="timeInput" type="text" maxlength="5" placeholder="MM:SS" />
-                    <div class="time-label" id="timeLabel">剩余时间</div>
+                    <div class="status-badge stopped" id="statusBadge">
+                        <span class="indicator"></span>
+                        <span id="statusText">未开始</span>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <div class="interval-section">
+                        <span class="interval-label">提醒间隔</span>
+                        <div class="interval-control">
+                            <button class="interval-btn" id="decreaseBtn">−</button>
+                            <span class="interval-value" id="intervalValue">20 分钟</span>
+                            <button class="interval-btn" id="increaseBtn">+</button>
+                        </div>
+                    </div>
+
+                <div class="timer-controls">
+                    <button class="btn-primary" id="toggleBtn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" id="toggleIcon">
+                            <polygon points="5,3 19,12 5,21" />
+                        </svg>
+                        <span id="toggleText">开始计时</span>
+                    </button>
+                    <button class="btn-reset" id="resetBtn" title="重置计时">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                            <path d="M3 3v5h5"/>
+                        </svg>
+                    </button>
+                </div>
                 </div>
             </div>
-        </div>
 
-        <div style="display: flex; justify-content: center;">
-            <div class="status-badge stopped" id="statusBadge">
-                <span class="indicator"></span>
-                <span id="statusText">未开始</span>
-            </div>
-        </div>
+            <!-- 设置页面视图 -->
+            <div class="view" id="settingsView">
+                <button class="back-btn" id="backBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    返回
+                </button>
 
-        <div class="controls">
-            <div class="interval-section">
-                <span class="interval-label">提醒间隔</span>
-                <div class="interval-control">
-                    <button class="interval-btn" id="decreaseBtn">−</button>
-                    <span class="interval-value" id="intervalValue">20 分钟</span>
-                    <button class="interval-btn" id="increaseBtn">+</button>
+                <div class="settings-title">设置</div>
+
+                <!-- 外观主题设置 -->
+                <div class="setting-card">
+                    <div class="setting-card-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"/>
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        </svg>
+                        外观主题
+                    </div>
+
+                    <div class="theme-options">
+                        <div class="theme-option" id="themeSystem" data-theme="system">
+                            <div class="theme-preview system"></div>
+                            <span class="theme-option-label">跟随系统</span>
+                        </div>
+                        <div class="theme-option" id="themeLight" data-theme="light">
+                            <div class="theme-preview light"></div>
+                            <span class="theme-option-label">浅色</span>
+                        </div>
+                        <div class="theme-option" id="themeDark" data-theme="dark">
+                            <div class="theme-preview dark"></div>
+                            <span class="theme-option-label">深色</span>
+                        </div>
+                    </div>
+
+                    <div class="current-theme-status">
+                        <span class="status-label">当前模式</span>
+                        <span class="status-value" id="currentThemeStatus">跟随系统</span>
+                    </div>
+                </div>
+
+                <!-- 关于 -->
+                <div class="setting-card">
+                    <div class="setting-card-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        关于
+                    </div>
+                    <div style="font-size: 13px; color: var(--text-secondary);">
+                        站立提醒 v1.0.0<br>
+                        保持健康，定时活动
+                    </div>
                 </div>
             </div>
-
-            <button class="btn-primary" id="toggleBtn">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                    <polygon points="5,3 19,12 5,21" />
-                </svg>
-                <span id="toggleText">开始计时</span>
-            </button>
         </div>
     </div>
 
-    <script src="control-renderer.js"></script>
+    <script type="module" src="control-renderer.js"></script>
 </body>
 
 </html>

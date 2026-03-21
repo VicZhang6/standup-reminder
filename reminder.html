@@ -9,6 +9,30 @@
 
     :root {
       color-scheme: light;
+      --overlay-bg: linear-gradient(180deg, rgba(15, 23, 42, 0.94) 0%, rgba(15, 23, 42, 0.9) 100%);
+      --overlay-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-shadow: 0 32px 64px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      --text-primary: #1a1a2e;
+      --text-secondary: #6b7280;
+      --text-muted: #9ca3af;
+      --timer-bg: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      --timer-color: #4b5563;
+      --dot-color: #ef4444;
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --overlay-bg: #001a3c;
+      --overlay-gradient: linear-gradient(180deg, rgba(0, 26, 60, 0.95), rgba(0, 26, 60, 0.98));
+      --card-bg: rgba(0, 40, 81, 0.95);
+      --card-shadow: 0 32px 64px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      --text-primary: #e6f0ff;
+      --text-secondary: #8aa8d9;
+      --text-muted: #5a8bc7;
+      --timer-bg: linear-gradient(135deg, #003366 0%, #002851 100%);
+      --timer-color: #b3d1f7;
+      --dot-color: #fca5a5;
     }
 
     * {
@@ -30,9 +54,14 @@
       justify-content: center;
       background:
         radial-gradient(circle at top, rgba(129, 140, 248, 0.24), transparent 35%),
-        linear-gradient(180deg, rgba(15, 23, 42, 0.94) 0%, rgba(15, 23, 42, 0.9) 100%);
-      -webkit-app-region: no-drag;
+        var(--overlay-bg);
       overflow: hidden;
+    }
+
+    :root[data-theme="dark"] body {
+      background:
+        radial-gradient(circle at top, rgba(79, 70, 229, 0.12), transparent 40%),
+        var(--overlay-bg);
     }
 
     .overlay {
@@ -41,13 +70,17 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      background: var(--overlay-gradient);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
 
     body.platform-darwin {
       background: rgba(0, 0, 0, 0.55);
+    }
+
+    :root[data-theme="dark"] body.platform-darwin {
+      background: rgba(0, 26, 60, 0.8);
     }
 
     body.platform-darwin .overlay {
@@ -65,12 +98,9 @@
       z-index: 10;
       width: 440px;
       padding: 48px 40px;
-      background: rgba(255, 255, 255, 0.92);
+      background: var(--card-bg);
       border-radius: 28px;
-      box-shadow:
-        0 32px 64px rgba(0, 0, 0, 0.25),
-        0 8px 24px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      box-shadow: var(--card-shadow);
       text-align: center;
       animation: cardIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       opacity: 0;
@@ -110,14 +140,14 @@
     .title {
       font-size: 26px;
       font-weight: 800;
-      color: #1a1a2e;
+      color: var(--text-primary);
       margin-bottom: 10px;
       letter-spacing: -0.5px;
     }
 
     .subtitle {
       font-size: 15px;
-      color: #6b7280;
+      color: var(--text-secondary);
       margin-bottom: 28px;
       line-height: 1.5;
     }
@@ -126,12 +156,12 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      background: var(--timer-bg);
       padding: 10px 20px;
       border-radius: 50px;
       margin-bottom: 32px;
       font-size: 14px;
-      color: #4b5563;
+      color: var(--timer-color);
       font-weight: 500;
     }
 
@@ -139,7 +169,7 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #ef4444;
+      background: var(--dot-color);
       animation: blink 1s ease-in-out infinite;
     }
 
@@ -183,7 +213,7 @@
     .tips {
       margin-top: 20px;
       font-size: 12px;
-      color: #9ca3af;
+      color: var(--text-muted);
     }
   </style>
 </head>
@@ -220,6 +250,6 @@
     <p class="tips">点击后将自动开始下一轮计时</p>
   </div>
 
-  <script src="renderer.js"></script>
+  <script type="module" src="renderer.js"></script>
 </body>
 </html>

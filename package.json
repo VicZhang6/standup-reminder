@@ -2,87 +2,20 @@
   "name": "standup-reminder",
   "version": "1.0.0",
   "description": "站立提醒应用 - 每隔一段时间提醒你站起来活动",
-  "main": "main.js",
   "author": "Vic Zhang",
   "scripts": {
-    "start": "electron .",
-    "dev": "electronmon . --dev",
-    "dev:plain": "electron . --dev",
-    "build": "electron-builder",
-    "build:mac": "electron-builder --mac --arm64",
-    "build:dmg": "electron-builder --mac dmg --arm64",
-    "build:win": "electron-builder --win --x64"
+    "dev": "node scripts/run-tauri.mjs dev",
+    "dev:web": "vite --host 127.0.0.1 --port 1420",
+    "build": "node scripts/run-tauri.mjs build",
+    "build:web": "vite build",
+    "build:win": "node scripts/run-tauri.mjs build",
+    "tauri": "tauri"
   },
-  "electronmon": {
-    "patterns": [
-      "!dist/**",
-      "!tmp-control-window*.png"
-    ]
-  },
-  "build": {
-    "appId": "com.viczhang.standup-reminder",
-    "productName": "站立提醒",
-    "mac": {
-      "category": "public.app-category.healthcare-fitness",
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "arm64"
-          ]
-        }
-      ],
-      "icon": "assets/icon.icns"
-    },
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "icon": "assets/icon.ico"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "installerLanguages": [
-        "zh_CN",
-        "en_US"
-      ],
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
-    },
-    "dmg": {
-      "title": "站立提醒",
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
-    "files": [
-      "main.js",
-      "preload.js",
-      "reminder.html",
-      "renderer.js",
-      "control.html",
-      "control-renderer.js",
-      "assets/**/*"
-    ]
+  "dependencies": {
+    "@tauri-apps/api": "^2.10.1"
   },
   "devDependencies": {
-    "electron": "^33.0.0",
-    "electron-builder": "^25.1.8",
-    "electronmon": "^2.0.4"
+    "@tauri-apps/cli": "^2.10.1",
+    "vite": "^8.0.1"
   }
 }

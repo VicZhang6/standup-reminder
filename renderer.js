@@ -1,15 +1,67 @@
-// renderer.js - 提醒弹窗渲染进程
-document.body.classList.add(`platform-${window.electronAPI.platform || 'unknown'}`);
+import { getCurrentWindow } from '@tauri-apps/api/window';
+import {
+  STORAGE_KEYS,
+  applyTheme,
+  detectPlatform,
+  getSeatedTimeLabel,
+  getStoredInterval,
+  getStoredTheme,
+  markReminderDismissed
+} from './app-shared.js';
 
-document.getElementById('dismiss-btn').addEventListener('click', () => {
-    // 添加按钮反馈动画
-    const btn = document.getElementById('dismiss-btn');
-    btn.textContent = '✓ 好的，继续加油！';
-    btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-    btn.style.pointerEvents = 'none';
+const reminderWindow = getCurrentWindow();
+const platform = detectPlatform();
+const dismissBtn = document.getElementById('dismiss-btn');
+const seatedTime = document.getElementById('seated-time');
 
-    // 稍微延迟后关闭，给用户看到反馈
-    setTimeout(() => {
-        window.electronAPI.dismissReminder();
+let currentTheme = getStoredTheme();
+
+document.body.classList.add(`platform-${platform}`);
+
+function syncTheme() {
+  applyTheme(currentTheme);
+}
+
+function updateSeatedTime() {
+  seatedTime.textContent = getSeatedTimeLabel(getStoredInterval(20));
+}
+
+function handleStorageChange(event) {
+  if (event.key === STORAGE_KEYS.theme) {
+    currentTheme = getStoredTheme();
+    syncTheme();
+  }
+
+  if (event.key === STORAGE_KEYS.intervalMinutes) {
+    updateSeatedTime();
+  }
+}
+
+function setupDismissButton() {
+  dismissBtn.addEventListener('click', () => {
+    dismissBtn.textContent = '✓ 好的，继续加油！';
+    dismissBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+    dismissBtn.style.pointerEvents = 'none';
+
+    window.setTimeout(async () => {
+      markReminderDismissed();
+      await reminderWindow.close();
     }, 400);
-});
+  });
+}
+
+function init() {
+  syncTheme();
+  updateSeatedTime();
+  setupDismissButton();
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (currentTheme === 'system') {
+      syncTheme();
+    }
+  });
+
+  window.addEventListener('storage', handleStorageChange);
+}
+
+init();

@@ -1,0 +1,21 @@
+[package]
+name = "standup-reminder"
+version = "1.0.0"
+description = "Standup reminder desktop app"
+authors = ["Vic Zhang"]
+license = "MIT"
+repository = "https://github.com/VicZhang6/standup-reminder"
+edition = "2021"
+rust-version = "1.77.2"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "standup_reminder_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.5.6", features = [] }
+
+[dependencies]
+tauri = { version = "2.10.3", features = ["tray-icon"] }
