@@ -488,6 +488,100 @@
             outline-offset: 2px;
         }
 
+        /* 更新提示 */
+        .update-banner {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin-top: 14px;
+            padding: 10px 14px;
+            background: color-mix(in srgb, var(--accent) 8%, transparent);
+            border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+            border-radius: 10px;
+        }
+
+        .update-banner.visible {
+            display: flex;
+        }
+
+        .update-banner-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
+        }
+
+        .update-banner-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .update-banner-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .update-banner-version {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .update-banner-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .update-banner-btn {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .update-banner-btn.primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .update-banner-btn.primary:hover {
+            background: var(--accent-soft);
+        }
+
+        .update-banner-btn.dismiss {
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .update-banner-btn.dismiss:hover {
+            color: var(--text-primary);
+        }
+
+        /* 设置按钮上的更新小红点 */
+        .settings-btn-wrap {
+            position: relative;
+        }
+
+        .update-dot {
+            display: none;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+        }
+
+        .update-dot.visible {
+            display: block;
+        }
+
         .setting-toggle-row {
             display: flex;
             align-items: center;
@@ -1001,12 +1095,15 @@
             <div class="titlebar-title">站立提醒</div>
         </div>
         <div class="window-controls" id="windowControls">
-            <button type="button" class="win-btn win-btn-settings" id="settingsBtn" title="设置" aria-label="设置">
-                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
-                </svg>
-            </button>
+            <span class="settings-btn-wrap">
+                <button type="button" class="win-btn win-btn-settings" id="settingsBtn" title="设置" aria-label="设置">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                    </svg>
+                </button>
+                <span class="update-dot" id="updateDot"></span>
+            </span>
             <button type="button" class="win-btn win-btn-minimize" title="最小化" aria-label="最小化">
                 <svg viewBox="0 0 10 10" aria-hidden="true">
                     <path d="M0 5h10" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" />
@@ -1148,6 +1245,21 @@
                         <p class="about-line">站立提醒 v1.5.1</p>
                         <p class="about-line">保持健康，定时活动</p>
                         <button type="button" class="about-download-btn" id="releaseDownloadBtn">下载最新版本</button>
+                        <div class="update-banner" id="updateBanner">
+                            <svg class="update-banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            <div class="update-banner-body">
+                                <div class="update-banner-title">发现新版本</div>
+                                <div class="update-banner-version" id="updateVersionText"></div>
+                            </div>
+                            <div class="update-banner-actions">
+                                <button type="button" class="update-banner-btn dismiss" id="updateDismissBtn">忽略</button>
+                                <button type="button" class="update-banner-btn primary" id="updateDownloadBtn">前往下载</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

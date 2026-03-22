@@ -23,6 +23,7 @@ import {
   setStoredShowTrayTime,
   setStoredTheme
 } from './app-shared.js';
+import { checkForUpdate, dismissUpdate, isDismissed } from './update-checker.js';
 
 const currentWindow = getCurrentWindow();
 const platform = detectPlatform();
@@ -61,9 +62,15 @@ const themeDark = document.getElementById('themeDark');
 const currentThemeStatus = document.getElementById('currentThemeStatus');
 const showFloatingToggle = document.getElementById('showFloatingToggle');
 const releaseDownloadBtn = document.getElementById('releaseDownloadBtn');
+const updateBanner = document.getElementById('updateBanner');
+const updateVersionText = document.getElementById('updateVersionText');
+const updateDownloadBtn = document.getElementById('updateDownloadBtn');
+const updateDismissBtn = document.getElementById('updateDismissBtn');
+const updateDot = document.getElementById('updateDot');
 
 const RELEASE_LATEST_URL =
   'https://github.com/VicZhang6/standup-reminder/releases/latest';
+const CURRENT_VERSION = '1.5.1';
 
 let tray = null;
 let currentInterval = getStoredInterval(20);
@@ -751,6 +758,39 @@ function disableContextMenu() {
   });
 }
 
+function showUpdateBanner(release) {
+  if (!updateBanner || !release || isDismissed(release.version)) return;
+
+  updateVersionText.textContent = `${CURRENT_VERSION} → ${release.version}`;
+  updateBanner.classList.add('visible');
+  updateDot?.classList.add('visible');
+
+  updateDownloadBtn?.addEventListener('click', async () => {
+    try {
+      await openUrl(release.url);
+    } catch {
+      window.open(release.url, '_blank', 'noopener,noreferrer');
+    }
+  }, { once: true });
+
+  updateDismissBtn?.addEventListener('click', () => {
+    dismissUpdate(release.version);
+    updateBanner.classList.remove('visible');
+    updateDot?.classList.remove('visible');
+  }, { once: true });
+}
+
+async function runUpdateCheck() {
+  try {
+    const release = await checkForUpdate(CURRENT_VERSION);
+    if (release) {
+      showUpdateBanner(release);
+    }
+  } catch (error) {
+    console.error('Update check failed:', error);
+  }
+}
+
 function shouldHandleToggleShortcut(event) {
   const isSpaceKey = event.code === 'Space' || event.key === ' ';
   if (!isSpaceKey || event.repeat) {
@@ -897,6 +937,8 @@ async function init() {
   }
 
   updateFloatingToggleUI();
+
+  void runUpdateCheck();
 }
 
 updateFloatingToggleUI();
